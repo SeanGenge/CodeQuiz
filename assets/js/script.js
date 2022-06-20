@@ -15,6 +15,12 @@ var answersDiv = document.getElementById("answers");
 var resultDiv = document.getElementById("result");
 var highscoreFormDiv = document.getElementById("highscore-form");
 var formScore = document.getElementById("form-score");
+var saveHighscoreBtn = document.getElementById("save-score");
+var highscoresDiv = document.getElementById("highscores");
+var highscoresList = document.getElementById("highscores-list");
+var highscoreBtn = document.getElementById("display-highscores");
+var backBtn = document.getElementById("back");
+var clearHighscoresBtn = document.getElementById("clear-highscores");
 // Stores the id of the questions that haven't been asked yet. This just makes sure that there will be no duplicate questions
 var numUnansweredQuestions = [];
 // The current question that is being asked
@@ -24,9 +30,7 @@ var score = 0;
 var scoreMulti = 25.0;
 // The quiz timer
 var currTime = 0;
-const MAX_TIME = 90;
-// The currently displayed screen
-var currentScreen = "main";
+const MAX_TIME = 50;
 // Keep track of the timerInterval outside so if you finish the quiz before the timer runs out, can clear it
 var timeInterval;
 
@@ -93,8 +97,8 @@ function checkAnswer(event) {
         resultDiv.textContent = "Correct!";
     }
     else {
-        score += -scoreMulti * 50.0;
-        updateTime(-10);
+        score += -scoreMulti * 15.0;
+        updateTime(-15);
         resultDiv.textContent = "Incorrect! -10 seconds";
     }
     
@@ -119,23 +123,68 @@ function updateTime(diff) {
 }
 
 function displayItem(item) {
-    // displayQuiz: True - Displays the quiz and hides all other components on screen
-    // False: Hide the quiz area and display the main menu
+    // displays a particular element on screen and hides the rest
     mainMenuDiv.className = "hidden";
     quizAreaDiv.className = "hidden";
     highscoreFormDiv.className = "hidden";
+    highscoresDiv.className = "hidden";
         
     if (item === "quiz") {
-        currentScreen = "quiz";
         quizAreaDiv.className = "show";
         
     }
     else if (item === "main") {
-        currentScreen = "main";
         mainMenuDiv.className = "show";
     }
     else if (item === "highscore-form") {
         highscoreFormDiv.className = "show";
+    }
+    else if (item === "highscores") {
+        highscoresDiv.className = "show";
+    }
+}
+
+function sortHighscore(x, y) {
+    if (x[1] < y[1]) {
+        return 1;
+    }
+    else if (x[1] > y[1]) {
+        return -1;
+    }
+    else {
+        return 0;
+    }
+}
+
+function saveHighscore(event) {
+    event.preventDefault();
+    var highscores = JSON.parse(localStorage.getItem("quiz-highscores"));
+    var name = document.getElementById("highscore-name");
+    
+    if (highscores === null) {
+        highscores = [];
+    }
+    
+    highscores.push([name.value, score]);
+    highscores.sort(sortHighscore);
+    
+    localStorage.setItem("quiz-highscores", JSON.stringify(highscores));
+    
+    displayItem("main");
+}
+
+function displayHighscores(event) {
+    displayItem("highscores");
+    var highscores = JSON.parse(localStorage.getItem("quiz-highscores"));
+    
+    highscoresList.replaceChildren();
+    
+    for (var i = 0; i < highscores.length; i++) {
+        var highscoreli = document.createElement("li");
+        var highscore = highscores[i];
+        
+        highscoreli.textContent = highscore[0] + ": " + highscore[1];
+        highscoresList.appendChild(highscoreli);
     }
 }
 
@@ -154,6 +203,20 @@ function startQuiz() {
     displayItem("quiz");
 }
 
+function goBack(event) {
+    displayItem("main");
+}
+
+function clearHighscores(event) {
+    localStorage.removeItem("quiz-highscores");
+    
+    highscoresList.replaceChildren();
+}
+
 startQuizDiv.addEventListener("click", startQuiz);
+saveHighscoreBtn.addEventListener("click", saveHighscore);
+highscoreBtn.addEventListener("click", displayHighscores);
+backBtn.addEventListener("click", goBack);
+clearHighscoresBtn.addEventListener("click", clearHighscores);
 
 displayItem("main");

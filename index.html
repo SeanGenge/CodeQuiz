@@ -6,17 +6,17 @@
     </head>
     <body>
         <div id="top-menu">
-            <div id="highscores" class="button">Highscores</div>
+            <div id="display-highscores" class="button">Highscores</div>
             <div id="timer" class=""></div>
         </div>
         <div class="center">
             <div id="main-menu">
-                <div id="title">Coding Quiz challenge</div>
-                <div id="description">Answer as many questions as possible before the timer runs out. Each wrong answer will reduce the timer by a set amount</div>
+                <div id="title" class="text-center heading">Coding Quiz challenge</div>
+                <div id="description" class="text-center">Answer as many questions as possible before the timer runs out. Each wrong answer will reduce the timer. If the timer reaches 0 or you answer all the questions then you will receive a score. The score is calculated based on the time remaining and whether you got the answer correct or not. You will lose some points if you get the answer wrong</div>
                 <div id="start-quiz" class="button center">Start Quiz</div>
             </div>
             <div id="quiz-area">
-                <div id="question"></div>
+                <div id="question" class="heading"></div>
                 <ol id="answers"></ol>
                 <div id="result"></div>
             </div>
@@ -26,8 +26,16 @@
                 <form>
                     <label for="name">Name</label>
                     <input type="text" id="highscore-name" />
-                    <input type="submit" class="button" value="Submit" />
+                    <input id="save-score" type="submit" class="button" value="Submit" />
                 </form>
+            </div>
+            <div id="highscores">
+                <div>Highscores</div>
+                <ol id="highscores-list">
+                    
+                </ol>
+                <div id="back" class="button inline">Back</div>
+                <div id="clear-highscores" class="button inline">Clear Highscores</div>
             </div>
         </div>
         <script src="./assets/js/script.js"></script>
