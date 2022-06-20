@@ -179,6 +179,9 @@ function displayHighscores(event) {
     
     highscoresList.replaceChildren();
     
+    // Clear the timer if you clicked on the button while doing the quiz
+    clearInterval(timeInterval);
+    
     for (var i = 0; i < highscores.length; i++) {
         var highscoreli = document.createElement("li");
         var highscore = highscores[i];
