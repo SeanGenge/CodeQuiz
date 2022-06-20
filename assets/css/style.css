@@ -1,0 +1,57 @@
+:root {
+    --buttonColour: #5D3FD3;
+}
+
+#title {
+    margin: 10px;
+}
+
+#description {
+    margin: 10px;
+}
+
+.center {
+    width: 75%;
+    margin: 0 auto !important;
+}
+
+.button {
+    background: var(--buttonColour);
+    list-style-position: inside;
+    margin: 5px 5px 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: block;
+}
+
+#start-quiz:hover {
+    cursor: pointer;
+}
+
+#quiz-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#answers {
+    padding: 0;
+}
+
+#answers li:hover {
+    cursor: pointer;
+}
+
+#result {
+    border-top: 1px solid grey;
+    width: 50%;
+    padding-top: 10px;
+}
