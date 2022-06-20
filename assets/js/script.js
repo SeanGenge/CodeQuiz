@@ -1,6 +1,11 @@
-var questions = [["question 1 _____", "answer1", "answer2", "answer3", "answer4", "1"],
-                 ["question 2 _____", "answer5", "answer6", "answer7", "answer8", "2"],
-                 ["question 3 _____", "answer9", "answer9", "answer9", "answer9", "3"]];
+var questions = [["Commonly used data types DO NOT include", "strings", "booleans", "alerts", "numbers", "3"],
+                 ["the condition in an if / else statement is enclosed within _____", "quotes", "curly braces", "parentheses", "square brackets", "3"],
+                 ["Arrays in Javascript can be used to store ______", "numbers and strings", "other arrays", "booleans", "all of the above", "4"],
+                 ["To create a timer, you would use ______", "document.setInterval()", "setInterval()", "createTimer()", "document.createTimer()", "2"],
+                 ["To remove the third item from an array called fruit, you would use ______", "fruit.splice(2, 1)", "fruit.remove(3)", "fruit.pop(3)", "fruit.slice(3)", "1"],
+                 ["Which is not a way to get an element with id=main", "document.getElementById(\"main\")", "document.querySelector(\"#main\")", "document.querySelector(\".main\")", "document.querySelectorAll(\"#main-menu\")[0]", "3"],
+                 ["How would you store something on the browser indefinitely", "localStorage.setItem(\"item\", \"value\")", "localStorage.createItem(\"item\", \"value\")", "sessionStorage.setItem(\"item\", \"value\")", "sessionStorage.createItem(\"item\", \"value\")", "1"],
+                 ["Which is NOT a way to create a variable", "let score = 5", "var fruit = [\"apple\", 3]", "var func = function hello() { }", "const FINISHED = false", "1"]];
 var mainMenuDiv = document.getElementById("main-menu");
 var startQuizDiv = document.getElementById("start-quiz");
 var quizAreaDiv = document.getElementById("quiz-area");
@@ -8,19 +13,22 @@ var timerDiv = document.getElementById("timer");
 var questionDiv = document.getElementById("question");
 var answersDiv = document.getElementById("answers");
 var resultDiv = document.getElementById("result");
+var highscoreFormDiv = document.getElementById("highscore-form");
+var formScore = document.getElementById("form-score");
 // Stores the id of the questions that haven't been asked yet. This just makes sure that there will be no duplicate questions
 var numUnansweredQuestions = [];
 // The current question that is being asked
 var currentQuestionId = 0;
 // the current score of the player
 var score = 0;
-var scoreMulti = 10;
+var scoreMulti = 25.0;
 // The quiz timer
 var currTime = 0;
 const MAX_TIME = 90;
-var finishedQuiz = false;
 // The currently displayed screen
 var currentScreen = "main";
+// Keep track of the timerInterval outside so if you finish the quiz before the timer runs out, can clear it
+var timeInterval;
 
 function resetQuiz() {
     for (var i = 0; i < questions.length; i++) {
@@ -32,18 +40,18 @@ function resetQuiz() {
 
 function startQuizTimer() {
     currTime = MAX_TIME;
+    timerDiv.textContent = "Time left: " + currTime;
     
-    var timeInterval = setInterval(function() {
+    timeInterval = setInterval(function() {
         if (currTime >= 1) {
-            timerDiv.textContent = "Time left: " + currTime;
-            currTime--;
+            updateTime(-1);
         }
         else {
             clearInterval(timeInterval);
-            finishedQuiz = true;
-            // TODO: Call the finish quiz thingy
+            updateTime(0);
+            quizFinished();
         }
-    });
+    }, 1000);
 }
 
 function getRandomQuestion() {
@@ -81,12 +89,13 @@ function checkAnswer(event) {
     var correctAnswerId = questions[currentQuestionId][questions[currentQuestionId].length - 1];
     
     if (answerId === correctAnswerId) {
-        score += scoreMulti * 50.0;
+        score += scoreMulti * currTime;
         resultDiv.textContent = "Correct!";
     }
     else {
-        score += -scoreMulti * 25.0;
-        resultDiv.textContent = "Incorrect!";
+        score += -scoreMulti * 50.0;
+        updateTime(-10);
+        resultDiv.textContent = "Incorrect! -10 seconds";
     }
     
     // Get a new question
@@ -94,31 +103,57 @@ function checkAnswer(event) {
         getRandomQuestion();
     }
     else {
-        finishedQuiz = true;
+        quizFinished();
     }
 }
 
-function displayQuiz(displayQuiz) {
-    // displayQuiz: True - Displays the quiz and hides all other components on screen
-    // False: Hide the quiz area and display the main menu
-    if (displayQuiz) {
-        currentScreen = "quiz";
-        mainMenuDiv.className = "hidden";
-        quizAreaDiv.className = "show";
+function updateTime(diff) {
+    if (currTime + diff >= 0) {
+        currTime += diff;
+        timerDiv.textContent = "Time left: " + currTime;
     }
     else {
+        currTime = 0;
+        timerDiv.textContent = "";
+    }
+}
+
+function displayItem(item) {
+    // displayQuiz: True - Displays the quiz and hides all other components on screen
+    // False: Hide the quiz area and display the main menu
+    mainMenuDiv.className = "hidden";
+    quizAreaDiv.className = "hidden";
+    highscoreFormDiv.className = "hidden";
+        
+    if (item === "quiz") {
+        currentScreen = "quiz";
+        quizAreaDiv.className = "show";
+        
+    }
+    else if (item === "main") {
         currentScreen = "main";
         mainMenuDiv.className = "show";
-        quizAreaDiv.className = "hidden";
     }
+    else if (item === "highscore-form") {
+        highscoreFormDiv.className = "show";
+    }
+}
+
+function quizFinished() {
+    // The timer reached 0 or all the questions have been answered
+    clearInterval(timeInterval);
+    updateTime(-MAX_TIME);
+    displayItem("highscore-form");
+    formScore.textContent = "Your Final Score is " + score;
 }
 
 function startQuiz() {
     resetQuiz();
+    startQuizTimer();
     getRandomQuestion();
-    displayQuiz(true);
+    displayItem("quiz");
 }
 
 startQuizDiv.addEventListener("click", startQuiz);
 
-displayQuiz(false);
+displayItem("main");

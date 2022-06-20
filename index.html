@@ -5,6 +5,10 @@
         <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
     </head>
     <body>
+        <div id="top-menu">
+            <div id="highscores" class="button">Highscores</div>
+            <div id="timer" class=""></div>
+        </div>
         <div class="center">
             <div id="main-menu">
                 <div id="title">Coding Quiz challenge</div>
@@ -12,10 +16,18 @@
                 <div id="start-quiz" class="button center">Start Quiz</div>
             </div>
             <div id="quiz-area">
-                <div id="timer"></div>
                 <div id="question"></div>
                 <ol id="answers"></ol>
                 <div id="result"></div>
+            </div>
+            <div id="highscore-form">
+                <div class="">All Done!</div>
+                <div id="form-score"></div>
+                <form>
+                    <label for="name">Name</label>
+                    <input type="text" id="highscore-name" />
+                    <input type="submit" class="button" value="Submit" />
+                </form>
             </div>
         </div>
         <script src="./assets/js/script.js"></script>

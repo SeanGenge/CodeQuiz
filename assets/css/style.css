@@ -22,6 +22,19 @@
     padding: 5px;
     border-radius: 5px;
     width: fit-content;
+    border: none;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+#top-menu {
+    display: flex;
+}
+
+#timer {
+    margin-left: auto;
 }
 
 .hidden {
@@ -32,10 +45,6 @@
     display: block;
 }
 
-#start-quiz:hover {
-    cursor: pointer;
-}
-
 #quiz-area {
     display: flex;
     flex-direction: column;
@@ -44,10 +53,6 @@
 
 #answers {
     padding: 0;
-}
-
-#answers li:hover {
-    cursor: pointer;
 }
 
 #result {
