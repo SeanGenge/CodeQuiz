@@ -5,7 +5,7 @@ var questions = [["Commonly used data types DO NOT include", "strings", "boolean
                  ["To remove the third item from an array called fruit, you would use ______", "fruit.splice(2, 1)", "fruit.remove(3)", "fruit.pop(3)", "fruit.slice(3)", "1"],
                  ["Which is not a way to get an element with id=main", "document.getElementById(\"main\")", "document.querySelector(\"#main\")", "document.querySelector(\".main\")", "document.querySelectorAll(\"#main-menu\")[0]", "3"],
                  ["How would you store something on the browser indefinitely", "localStorage.setItem(\"item\", \"value\")", "localStorage.createItem(\"item\", \"value\")", "sessionStorage.setItem(\"item\", \"value\")", "sessionStorage.createItem(\"item\", \"value\")", "1"],
-                 ["Which is NOT a way to create a variable", "let score = 5", "var fruit = [\"apple\", 3]", "var func = function hello() { }", "const FINISHED = false", "1"]];
+                 ["Which is NOT a way to create a variable", "int score = 5", "var fruit = [\"apple\", 3]", "var func = function hello() { }", "const FINISHED = false", "1"]];
 var mainMenuDiv = document.getElementById("main-menu");
 var startQuizDiv = document.getElementById("start-quiz");
 var quizAreaDiv = document.getElementById("quiz-area");
